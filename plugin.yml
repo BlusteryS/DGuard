@@ -1,0 +1,19 @@
+name: DGuard
+main: qpi\guard\DGuard
+version: 2.0.0
+
+authors:
+  - qPexLegendary
+  - BlusterySasha
+
+api: 5.0.0
+load: STARTUP
+
+commands:
+  rg:
+    description: Система регионов
+    permission: newplugin.rg
+
+permissions:
+  newplugin.rg:
+    default: true
