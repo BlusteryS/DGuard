@@ -52,10 +52,10 @@ class DGuard extends PluginBase implements Listener {
 				if (isset($args[0])) {
 					switch (strtolower($args[0])) {
 						case "pos1":
-							$this->set_pos(TRUE, $sender->getPosition()->getX(), $sender->getPosition()->getZ(), $sender->getWorld()->getDisplayName(), $sender);
+							$this->set_pos(TRUE, $sender->getPosition()->getFloorX(), $sender->getPosition()->getFloorZ(), $sender->getWorld()->getFolderName(), $sender);
 							break;
 						case "pos2":
-							$this->set_pos(FALSE, $sender->getPosition()->getX(), $sender->getPosition()->getZ(), $sender->getWorld()->getDisplayName(), $sender);
+							$this->set_pos(FALSE, $sender->getPosition()->getFloorX(), $sender->getPosition()->getFloorZ(), $sender->getWorld()->getFolderName(), $sender);
 							break;
 						default:
 							$sender->sendMessage("§l§c>§e Не найдена суб-команда.§r");

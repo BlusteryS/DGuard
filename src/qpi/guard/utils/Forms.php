@@ -32,7 +32,7 @@ class Forms {
 						$this->f_regions_list($player);
 						break;
 					case 3:
-						$this->f_regions_info($player, Methods::getInstance()->getRegion($player->getPosition()->getX(), $player->getPosition()->getZ(), $player->getWorld()->getDisplayName()));
+						$this->f_regions_info($player, Methods::getInstance()->getRegion($player->getPosition()->getFloorX(), $player->getPosition()->getFloorZ(), $player->getWorld()->getFolderName()));
 						break;
 					case 4:
 						$this->f_guide($player);
@@ -327,7 +327,7 @@ class Forms {
 
 					if (isset($this->wand[strtolower($player->getName())])) unset(DGuard::getInstance()->wand[strtolower($player->getName())]);
 
-					$result = Methods::getInstance()->createRegion($data[1], $player->getName(), $pos1["x"], $pos1["z"], $pos2["x"], $pos2["z"], $player->getWorld()->getDisplayName(), Server::getInstance()->isOp($player->getName()));
+					$result = Methods::getInstance()->createRegion($data[1], $player->getName(), $pos1["x"], $pos1["z"], $pos2["x"], $pos2["z"], $player->getWorld()->getFolderName(), Server::getInstance()->isOp($player->getName()));
 
 					if ($result === 0) {
 						$player->sendMessage("§l§c> §fРегион был успешно создан!§r");
@@ -392,7 +392,7 @@ class Forms {
 			$form = new SimpleForm(function (Player $player, ?int $data) {});
 
 			$form->setTitle("Регионы");
-			$form->setContent("Информация о регионе §e{$region}§f:\n" . "\n" . "Владелец: §b" . $info["owner"] . "§f\n" . "Жители: §b" . ((count($info["members"]) > 0) ? implode($info["members"], "§f, §b") : "§eОтсутствуют") . "§f.\n" . "Гости: §b" . ((count($info["guests"]) > 0) ? implode($info["guests"], "§f, §b") : "§eОтсутствуют") . "§f.\n" . "Площадь: §b" . Methods::getInstance()->getSpace($info["minX"], $info["minZ"], $info["maxX"], $info["maxZ"]) . " Блоков§f.");
+			$form->setContent("Информация о регионе §e{$region}§f:\n" . "\n" . "Владелец: §b" . $info["owner"] . "§f\n" . "Жители: §b" . (count($info["members"]) > 0 ? implode($info["members"], "§f, §b") : "§eОтсутствуют") . "§f.\n" . "Гости: §b" . (count($info["guests"]) > 0 ? implode($info["guests"], "§f, §b") : "§eОтсутствуют") . "§f.\n" . "Площадь: §b" . Methods::getInstance()->getSpace($info["minX"], $info["minZ"], $info["maxX"], $info["maxZ"]) . " Блоков§f.");
 			$form->addButton("Выход");
 
 			$player->sendForm($form);
