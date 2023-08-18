@@ -19,7 +19,7 @@ class Forms {
 	}
 
 	public function f_menu(Player $player): void {
-		$form = new SimpleForm(function (Player $player, $data) {
+		$form = new SimpleForm(function (Player $player, ?int $data) {
 			if ($data !== NULL) {
 				switch ($data) {
 					case 0:
@@ -58,7 +58,7 @@ class Forms {
 		}
 
 		if (count($regions) > 0) {
-			$form = new SimpleForm(function (Player $player, $data) {
+			$form = new SimpleForm(function (Player $player, ?int $data) {
 				if ($data !== NULL) {
 					$regions = [];
 					foreach (Methods::getInstance()->getRegions($player->getName()) as $name => $body) {
@@ -78,7 +78,7 @@ class Forms {
 				$form->addButton($name, 0, "textures/items/campfire");
 			}
 		} else {
-			$form = new SimpleForm(function (Player $player, $data) {
+			$form = new SimpleForm(function (Player $player, ?int $data) {
 				if ($data !== NULL) $this->f_menu($player);
 			});
 			$form->setContent("У вас еще нет регионов.");
@@ -95,7 +95,7 @@ class Forms {
 
 	public function f_edit_menu(Player $player, $region): void {
 		DGuard::getInstance()->region[strtolower($player->getName())] = $region;
-		$form = new SimpleForm(function (Player $player, $data) {
+		$form = new SimpleForm(function (Player $player, ?int $data) {
 			if ($data !== NULL) {
 				$region = DGuard::getInstance()->region[strtolower($player->getName())];
 
@@ -118,7 +118,7 @@ class Forms {
 				}
 			}
 		});
-		$form->setTitle("Управление регионом {$region}");
+		$form->setTitle("Управление регионом $region");
 		$form->setContent("Выберите нужное вам действие, которое хотите применить к данному региону.");
 
 		$form->addButton("Флаги региона", 0, "textures/items/repeater");
@@ -133,24 +133,26 @@ class Forms {
 
 	public function f_edit_flag(Player $player, $region): void {
 		DGuard::getInstance()->region[strtolower($player->getName())] = $region;
-		$form = new CustomForm(function (Player $player, $data) {
-			if (isset($data[1])) {
+		$form = new CustomForm(function (Player $player, ?array $data) {
+			if ($data !== NULL && isset($data[1])) {
 				$region = DGuard::getInstance()->region[strtolower($player->getName())];
 
 				Methods::getInstance()->setFlag($region, "pvp", $data[1] ? "allow" : "deny");
 				Methods::getInstance()->setFlag($region, "chest", $data[2] ? "allow" : "deny");
 				Methods::getInstance()->setFlag($region, "furnace", $data[3] ? "allow" : "deny");
-				Methods::getInstance()->setFlag($region, "pve", $data[4] ? "allow" : "deny");
+				Methods::getInstance()->setFlag($region, "interact", $data[4] ? "allow" : "deny");
+				Methods::getInstance()->setFlag($region, "mob", $data[5] ? "allow" : "deny");
 
 				$player->sendMessage("§l§c>§f Флаги региона былы успешно изменены.§r");
 			}
 		});
 		$form->setTitle("Управление регионом {$region}");
 		$form->addLabel("Установите нужные параметры установки флагов для региона §b{$region}§f.");
-		$form->addToggle("PvP", Methods::getInstance()->getFlag($region, "pvp") === "allow");
+		$form->addToggle("PVP", Methods::getInstance()->getFlag($region, "pvp") === "allow");
 		$form->addToggle("Использование сундуков", Methods::getInstance()->getFlag($region, "chest") === "allow");
 		$form->addToggle("Использование печей", Methods::getInstance()->getFlag($region, "furnace") === "allow");
-		$form->addToggle("PvE", Methods::getInstance()->getFlag($region, "pve") === "allow");
+		$form->addToggle("Взаимодействие с регионом", Methods::getInstance()->getFlag($region, "interact") === "allow");
+		$form->addToggle("PVE", Methods::getInstance()->getFlag($region, "mob") === "allow");
 
 		$player->sendForm($form);
 	}
@@ -168,7 +170,7 @@ class Forms {
 		}
 		DGuard::getInstance()->tmp[strtolower($player->getName())] = $tmp;
 
-		$form = new SimpleForm(function (Player $player, $data) {
+		$form = new SimpleForm(function (Player $player, ?int $data) {
 			if ($data !== NULL) {
 				$region = DGuard::getInstance()->region[strtolower($player->getName())];
 				$tmp = DGuard::getInstance()->tmp[strtolower($player->getName())];

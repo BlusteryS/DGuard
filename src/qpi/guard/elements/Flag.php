@@ -21,7 +21,7 @@ class Flag {
 		DGuard::$flags[strtolower($name)] = new Flag($name, $title, $default);
 	}
 
-	public static function getFlag($name) {
+	public static function getFlag($name): ?Flag {
 		return DGuard::$flags[strtolower($name)];
 	}
 

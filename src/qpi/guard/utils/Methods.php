@@ -135,10 +135,7 @@ class Methods {
 		return 1; //Регион с таким названием уже существует.
 	}
 
-	//Получает площадь
-
 	public function isPrivatedArea(int $x1, int $z1, int $x2, int $z2, string $level): bool {
-
 		$tmp = [];
 
 		if ($x1 > $x2) {
@@ -246,32 +243,26 @@ class Methods {
 		$old_role = $this->getRole($player, $region);
 
 		switch ($old_role) {
-			case 0: //Не был в регионе ранее
-				break;
-			case 1: //Был гостем
+			case 1:
 				foreach ($areas[$region]["guests"] as $id => $p) {
 					if ($p === $player) unset($areas[$region]["guests"][$id]);
 				}
 				break;
-			case 2: //Был Жителем
+			case 2:
 				foreach ($areas[$region]["members"] as $id => $p) {
 					if ($p === $player) unset($areas[$region]["members"][$id]);
 				}
 				break;
-			case 3: //Был Владельцем
-				break;
 		}
 
 		switch ($role) {
-			case 0: //Выгнан из региона
-				break;
-			case 1: //Стал участником
+			case 1:
 				$areas[$region]["guests"][] = $player;
 				break;
-			case 2: //Стал жителем
+			case 2:
 				$areas[$region]["members"][] = $player;
 				break;
-			case 3: //Стал владельцем
+			case 3:
 				$areas[$region]["members"][] = $areas[$region]["owner"];
 				$areas[$region]["owner"] = $player;
 				break;
@@ -289,16 +280,16 @@ class Methods {
 
 		if ($area["owner"] === $player) {
 			return 3;
-		} //Владелец
+		}
 
 		if (in_array($player, $area["members"])) {
 			return 2;
-		} //Жилец
+		}
 
 		if (in_array($player, $area["guests"])) {
 			return 1;
-		} //Гость
+		}
 
-		return 0; //Никто
+		return 0;
 	}
 }

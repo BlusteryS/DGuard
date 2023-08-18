@@ -39,10 +39,11 @@ class DGuard extends PluginBase implements Listener {
 		$this->areas = new Config($this->getDataFolder() . "areas.json", Config::JSON, []);
 		$this->config = new Config($this->getDataFolder() . "settings.json", Config::JSON, ["version" => self::VERSION, "default-space" => 10000, "default-regions" => 3, "main-level" => "world",]);
 
-		Flag::registerFlag("pvp", "Разрешает PvP.");
-		Flag::registerFlag("chest", "Разрешает всем открывать сундуки.");
-		Flag::registerFlag("furnace", "Разрешает всем использовать печки.");
-		Flag::registerFlag("pve", "Разрешает PvE.", "allow");
+		Flag::registerFlag("pvp", "Разрешает PVP");
+		Flag::registerFlag("chest", "Разрешает всем открывать сундуки");
+		Flag::registerFlag("interact", "Разрешает всем взаимодействовать с регионом");
+		Flag::registerFlag("furnace", "Разрешает всем использовать печки");
+		Flag::registerFlag("mob", "Разрешает бить мобов", "allow");
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args): bool {
