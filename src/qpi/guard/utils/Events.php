@@ -77,7 +77,7 @@ class Events implements Listener {
 		$player = $event->getPlayer();
 
 		foreach ($event->getTransaction()->getBlocks() as [$x, $y, $z, $block]) {
-			$region = Methods::getInstance()->getRegion($block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName());
+			$region = Methods::getInstance()->getRegion($block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName());
 
 			if ($region !== "") {
 				if (!Server::getInstance()->isOp($n = $player->getName())) {
@@ -102,7 +102,7 @@ class Events implements Listener {
 
 		if (($itemHand === Item::STICK || $itemHand === Item::WOODEN_AXE) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
 			if ($itemHand === Item::STICK) {
-				$region = Methods::getInstance()->getRegion($block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName());
+				$region = Methods::getInstance()->getRegion($block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName());
 
 				if ($region !== "") {
 					Forms::getInstance()->f_regions_info($player, $region);
@@ -112,18 +112,18 @@ class Events implements Listener {
 				$n = strtolower($player->getName());
 				if (isset(DGuard::getInstance()->wand[$n])) {
 					if (DGuard::getInstance()->wand[$n]) {
-						DGuard::getInstance()->set_pos(TRUE, $block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName(), $player);
+						DGuard::getInstance()->set_pos(TRUE, $block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName(), $player);
 					} else {
-						DGuard::getInstance()->set_pos(FALSE, $block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName(), $player);
+						DGuard::getInstance()->set_pos(FALSE, $block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName(), $player);
 					}
 				} else {
-					DGuard::getInstance()->set_pos(TRUE, $block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName(), $player);
+					DGuard::getInstance()->set_pos(TRUE, $block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName(), $player);
 				}
 			}
 
 			$event->cancel();
 		} elseif ((in_array($id, $this->blocked_blocks) || in_array($itemHand, $this->blocked_items)) && !Server::getInstance()->isOp($player->getName())) {
-			$region = Methods::getInstance()->getRegion($block->getPosition()->getX(), $block->getPosition()->getZ(), $player->getWorld()->getDisplayName());
+			$region = Methods::getInstance()->getRegion($block->getPosition()->getFloorX(), $block->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName());
 			if ($region !== "") {
 				$role = Methods::getInstance()->getRole($player->getName(), $region);
 				if ($role === 0) {
@@ -147,7 +147,7 @@ class Events implements Listener {
 		if ($event instanceof EntityDamageByEntityEvent) {
 			$player = $event->getEntity();
 
-			if (($region = Methods::getInstance()->getRegion($player->getPosition()->getX(), $player->getPosition()->getZ(), $player->getWorld()->getDisplayName())) === "") return;
+			if (($region = Methods::getInstance()->getRegion($player->getPosition()->getFloorX(), $player->getPosition()->getFloorZ(), $player->getWorld()->getDisplayName())) === "") return;
 
 			if ($player instanceof Player && $event->getDamager() instanceof Player) {
 				if (Methods::getInstance()->getFlag($region, "pvp") === "deny") {
